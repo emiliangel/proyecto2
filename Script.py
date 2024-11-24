@@ -23,8 +23,27 @@ def getorg():
     "Accept": "application/json" #Define respuesta a solicitud en formato Json
     }
 
-    response = requests.request('GET', url, headers=headers, data = payload) #Se realiza solicitud GET
-    return json.loads(response.text) #se obtiene la respuesta como cadena de texto, se convierte a un diccionario de python y retorna
+    try:
+            
+        response = requests.request('GET', url, headers=headers, data = payload) #Se realiza solicitud GET
+        response.raise_for_status() #se verifica que se este recibiendo la respuesta adecuada
+        
+        print('Solicitud exitosa para GetOrganizations')
+
+        return json.loads(response.text) #se obtiene la respuesta como cadena de texto, se convierte a un diccionario de python y retorna
+       
+    #En caso que no se valide la respuesta adecuada se consideran las siguientes excepciones 
+
+    except requests.exceptions.HTTPError as e:
+        print('Error en la solicitud')
+    except requests.exceptions.ConnectionError as e: 
+        print(f'Error HTTP: {e}')
+    except requests.exceptions.Timeout as e: 
+        print(f'Error de conexión: {e}')
+    except requests.exceptions.RequestException as e:
+        print(f'Otro error en la solicitud: {e}')
+
+
        
     
 #GetOrganizationsDevices
@@ -41,9 +60,23 @@ def getorgdevices (organization_id):
         "Accept": "application/json"
     }
 
-    
-    response2 = requests.request('GET', url, headers=headers, data = payload)
-    return json.loads(response2.text)
+    try:
+            
+        response2 = requests.request('GET', url, headers=headers, data = payload)
+        response2.raise_for_status()
+        print('Solicitud exitosa para GetOrganizationDevices')
+
+        return json.loads(response2.text)
+       
+    except requests.exceptions.HTTPError as e:
+        print('Error en la solicitud')
+    except requests.exceptions.ConnectionError as e: 
+        print(f'Error HTTP: {e}')
+    except requests.exceptions.Timeout as e: 
+        print(f'Error de conexión: {e}')
+    except requests.exceptions.RequestException as e:
+        print(f'Otro error en la solicitud: {e}')
+   
        
 
 #Se busca entre la lista de devices el que contenga más elementos entre todas las listas, 
