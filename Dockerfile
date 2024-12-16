@@ -13,7 +13,7 @@ WORKDIR /app
 COPY . /app
 
 # Definir el comando para ejecutar la aplicación
-CMD ["python3", "app.py"]
+CMD ["python3", "Script.py"]
 
 COPY requirements.txt requirements.txt 
 COPY Script.py Script.py
