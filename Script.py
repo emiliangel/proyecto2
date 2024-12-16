@@ -3,6 +3,7 @@ import json
 import requests
 from pprint import pprint
 import csv
+import time
 
 
 ##Orgdevices
@@ -102,39 +103,43 @@ def writerow (orgdev, tipo):
 
 print('\n\n')
 
-# Llamado de funciones
+##EJECUCIÓN DE CONSULTA Y LLAMADO DE FUNCIONES
 
-# Obtención de "id" de la organización correspondiente a la API key
+i=1
+while True: ## Bucle infinito, será detenido posteriormente por time.sleep (cada 5 minutos)
+    # Obtención de "id" de la organización correspondiente a la API key
 
-b=getorg() # se almacena lista retornada de GetOrganization con "id" de la organizacion
-#print(type(b))
-d=dict(b[0]) # se transforma el tipo de dato
-#se obtiene, finalmente el id, del diccionario obtenido de la lista de retornada por GetOrganization
-org_id=d.get("id")
+    b=getorg() # se almacena lista retornada de GetOrganization con "id" de la organizacion
+    #print(type(b))
+    d=dict(b[0]) # se transforma el tipo de dato
+    #se obtiene, finalmente el id, del diccionario obtenido de la lista de retornada por GetOrganization
+    org_id=d.get("id")
 
-orgdev = getorgdevices(org_id) # se almacenan dispositivos retornados de GetOrganizationDevices con el "id" obtenido
+    orgdev = getorgdevices(org_id) # se almacenan dispositivos retornados de GetOrganizationDevices con el "id" obtenido
+    
+    ##Se obtienen listas más grandes con appliance y wireless para ser usadas posteriormente en .cs
+    
+    # lista más grande con appliance
+    a = list(largest_list (orgdev, "appliance"))
+    # lista más grande con wireless
+    b = list(largest_list (orgdev, "wireless"))
 
-##Se obtienen listas más grandes con appliance y wireless para ser usadas posteriormente en .csv
+    #se toma la lista que contenga más elementos para la cabecera de .cs
+    columns= a+b #se concatenan las listas
+    columns = list(set(columns)) #se eliminan elementos duplicado
 
-# lista más grande con appliance
-a = list(largest_list (orgdev, "appliance"))
-# lista más grande con wireless
-b = list(largest_list (orgdev, "wireless"))
+    devices = 'devices.csv' #se crea archivo .csv
 
-#se toma la lista que contenga más elementos para la cabecera de .csv
-
-columns= a+b #se concatenan las listas
-columns = list(set(columns)) #se eliminan elementos duplicados
-
-devices = 'devices.csv' #se crea archivo .csv
-
-with open(devices, mode='w', newline='') as archivo_csv: #se abre archivo .csv en modo escritura
-
-## se crea el ojeto writer
-    writer_csv = csv.DictWriter(archivo_csv, fieldnames=columns)
-## asignar la fila del encabezado
-    writer_csv.writeheader()
-## se llaman funciones para llenar filas de .csv
-    writerow(orgdev, "appliance") # para appliance
-    writerow(orgdev, "wireless") # para wireless
-
+    #se abre archivo .csv en modo escritura
+    with open(devices, mode='w', newline='') as archivo_csv: 
+    ## se crea el ojeto writer
+        writer_csv = csv.DictWriter(archivo_csv, fieldnames=columns)
+    ## asignar la fila del encabezado
+        writer_csv.writeheader()
+    ## se llaman funciones para llenar filas de .csv
+        writerow(orgdev, "appliance") # para appliance
+        writerow(orgdev, "wireless") # para wireless
+    print("Consulta número %d realizada y archivo devices.csv actualizado" %(i))
+    i=i+1
+    print('\n\n')
+    time.sleep(5) ##temporizador que permite la ejecución del ciclo, después de cada 300 segundos (5 minutos)
