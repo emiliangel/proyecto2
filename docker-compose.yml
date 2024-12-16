@@ -1,0 +1,8 @@
+services:
+  sdn:
+    container_name: sdn
+    image: sdn
+    volumes:
+      - volumen1:/sdn/app
+volumes:
+  volumen1:
