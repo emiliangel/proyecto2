@@ -142,4 +142,4 @@ while True: ## Bucle infinito, será detenido posteriormente por time.sleep (cad
     print("Consulta número %d realizada y archivo devices.csv actualizado" %(i))
     i=i+1
     print('\n\n')
-    time.sleep(5) ##temporizador que permite la ejecución del ciclo, después de cada 300 segundos (5 minutos)
+    time.sleep(300) ##temporizador que permite la ejecución del ciclo, después de cada 300 segundos (5 minutos)
