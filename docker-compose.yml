@@ -3,6 +3,6 @@ services:
     container_name: sdn
     image: sdn
     volumes:
-      - volumen1:/sdn/app
+      - volumen1:/sdn/app  #indica alamacenamiento de directorio /app dentro del volumen
 volumes:
-  volumen1:
+  volumen1:  #volumen donde se van a almacenar .csv
