@@ -134,8 +134,8 @@ while True: ## Bucle infinito, será detenido posteriormente por time.sleep (cad
     with open(devices, mode='w', newline='') as archivo_csv: 
     ## se crea el ojeto writer
         writer_csv = csv.DictWriter(archivo_csv, fieldnames=columns)
-    ## asignar la fila del encabezado
-        writer_csv.writeheader()
+    ### asignar la fila del encabezado
+        writer_csv.writeheader() 
     ## se llaman funciones para llenar filas de .csv
         writerow(orgdev, "appliance") # para appliance
         writerow(orgdev, "wireless") # para wireless
